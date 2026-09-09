@@ -4,8 +4,12 @@ A standalone, offline HTML calculator for estimating quarterly tax payments on
 LLC/self-employment profit. Not part of the NanoClaw runtime — open
 `index.html` directly in a browser.
 
-Covers, for a North Carolina resident filing married filing jointly:
+Walks through the full flow: enter revenue and itemized expenses to build
+gross profit, then covers, for a North Carolina resident filing married
+filing jointly:
 
+- **Gross profit**: revenue minus an itemized, editable list of business
+  expenses.
 - **Self-employment tax** (Schedule SE): Social Security (12.4% up to the
   annual wage base) + Medicare (2.9%, uncapped) + Additional Medicare Tax
   (0.9% above $250,000 joint), accounting for other W-2 wages that share the
@@ -16,6 +20,8 @@ Covers, for a North Carolina resident filing married filing jointly:
 - **North Carolina income tax**: NC's flat rate applied to federal AGI (NC
   does not conform to the federal QBI deduction) less the NC standard
   deduction.
+- **Net profit after tax**: gross profit minus the three tax lines above —
+  what the business actually keeps.
 
 Supports tax years 2025 (finalized IRS/NCDOR figures) and 2026 (preliminary
 post-OBBBA inflation-adjusted figures — confirm against final IRS tables

@@ -116,7 +116,7 @@
   .subhead {
     color: var(--ink-soft);
     font-size: 15px;
-    max-width: 54ch;
+    max-width: 56ch;
     margin: 0;
   }
 
@@ -133,6 +133,10 @@
   }
 
   .panel-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.08em;
@@ -167,6 +171,7 @@
 
   .money-input {
     position: relative;
+    flex: 1;
   }
   .money-input::before {
     content: '$';
@@ -183,7 +188,7 @@
     padding-left: 26px;
   }
 
-  input[type="number"], select {
+  input[type="number"], input[type="text"], select {
     width: 100%;
     padding: 10px 12px;
     border-radius: 7px;
@@ -195,6 +200,7 @@
     font-variant-numeric: tabular-nums;
     appearance: none;
   }
+  input[type="text"] { font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px; }
   select {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 14px;
@@ -245,6 +251,74 @@
     color: var(--surface);
   }
 
+  /* --- Revenue & expense ledger --- */
+  .revenue-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0 16px;
+  }
+  .revenue-row label { flex: none; width: 100px; }
+
+  .expense-rows { display: flex; flex-direction: column; gap: 8px; }
+  .expense-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .expense-row input[type="text"] { flex: 1.4; }
+  .expense-row .money-input { flex: 1; min-width: 0; }
+  .expense-row .money-input input { text-align: right; }
+
+  .row-remove {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink-faint);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .row-remove:hover { color: var(--warn); border-color: var(--warn); }
+
+  .add-row-btn {
+    align-self: flex-start;
+    margin-top: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--pine);
+    background: var(--pine-soft);
+    border: 1px dashed var(--line-strong);
+    border-radius: 7px;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  .add-row-btn:hover { border-style: solid; }
+
+  .ledger-strip {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .ledger-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 13.5px;
+  }
+  .ledger-line .li-value { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  .ledger-line.total {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-strong);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .ledger-line.total .li-value { color: var(--pine); font-size: 17px; }
+
   .section-title {
     display: flex;
     align-items: baseline;
@@ -287,12 +361,18 @@
 
   .results { margin-top: 8px; }
 
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
   .quarter-tile {
     background: linear-gradient(155deg, var(--pine) 0%, color-mix(in srgb, var(--pine) 82%, black) 100%);
     color: var(--surface);
     border-radius: 10px;
     padding: 26px 24px;
-    margin-top: 20px;
     box-shadow: var(--shadow);
   }
   .quarter-tile .qt-label {
@@ -329,6 +409,38 @@
     display: block;
   }
 
+  .keep-tile {
+    background: linear-gradient(155deg, var(--gold) 0%, color-mix(in srgb, var(--gold) 78%, black) 100%);
+    color: var(--surface);
+    border-radius: 10px;
+    padding: 22px 22px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .keep-tile .qt-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  .keep-tile .qt-amount {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 4px;
+  }
+  .keep-tile .qt-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    opacity: 0.85;
+  }
+
   .rate-strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -337,7 +449,7 @@
     border: 1px solid var(--line);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 20px;
+    margin-top: 16px;
   }
   .rate-cell {
     background: var(--surface);
@@ -385,7 +497,6 @@
     gap: 6px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
-    color: var(--ink-faint);
     background: var(--gold-soft);
     color: var(--gold);
     padding: 3px 9px;
@@ -398,25 +509,38 @@
     .field-grid { grid-template-columns: 1fr; }
     .quarter-tile .qt-amount { font-size: 32px; }
     .rate-strip { grid-template-columns: 1fr; }
+    .outcome-grid { grid-template-columns: 1fr; }
+    .expense-row input[type="text"] { flex: 1; }
   }
 </style>
 
 <div class="wrap">
   <header class="page-head">
     <div class="eyebrow">Schedule&nbsp;C &middot; Schedule&nbsp;SE &middot; NC&nbsp;D-400</div>
-    <h1>What to send in this quarter</h1>
-    <p class="subhead">Estimate self-employment tax, federal income tax, and North Carolina income tax on your LLC's profit &mdash; married filing jointly, North Carolina resident.</p>
+    <h1>Revenue in, taxes out, take-home left over</h1>
+    <p class="subhead">Enter what the business brought in and spent. This worksheet builds your gross profit, runs it through self-employment tax, federal income tax, and North Carolina income tax, and shows what's actually left &mdash; married filing jointly, North Carolina resident.</p>
   </header>
 
   <div class="card panel">
-    <p class="panel-title">Your numbers</p>
-    <div class="field-grid">
-      <div class="field span-2">
-        <label for="profit">Net business profit this year (Schedule&nbsp;C, before tax)</label>
-        <div class="money-input"><input type="number" id="profit" value="120000" min="0" step="500" inputmode="decimal"></div>
-        <p class="hint">Business income minus business expenses &mdash; not revenue.</p>
-      </div>
+    <p class="panel-title">Revenue &amp; expenses</p>
 
+    <div class="revenue-row">
+      <label for="revenue">Revenue</label>
+      <div class="money-input"><input type="number" id="revenue" value="180000" min="0" step="500" inputmode="decimal"></div>
+    </div>
+
+    <div class="expense-rows" id="expenseRows"></div>
+    <button type="button" class="add-row-btn" id="addExpense">+ Add expense</button>
+
+    <div class="ledger-strip">
+      <div class="ledger-line"><span class="li-label">Total expenses</span><span class="li-value" id="totalExpensesOut">&mdash;</span></div>
+      <div class="ledger-line total"><span class="li-label">Gross profit (revenue &minus; expenses)</span><span class="li-value" id="grossProfitOut">&mdash;</span></div>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <p class="panel-title">Filing details</p>
+    <div class="field-grid">
       <div class="field span-2">
         <label for="wages">Other W-2 wages on the joint return this year <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
         <div class="money-input"><input type="number" id="wages" value="0" min="0" step="500" inputmode="decimal"></div>
@@ -454,6 +578,7 @@
     <h3>Read this before you send money to anyone</h3>
     <ul>
       <li>This is a planning estimate, not a filed return. It assumes the standard deduction, one QBI-eligible business, and no other income, credits, or itemized deductions.</li>
+      <li>"Net profit after tax" divides taxes only against this business's gross profit. If you entered other W-2 wages, the federal and NC tax shown are for the whole joint return, so this figure slightly overstates what the business alone "cost" in tax.</li>
       <li>2026 federal brackets and QBI/SS figures reflect preliminary post&#8209;OBBBA inflation adjustments reported ahead of the IRS's final published tables &mdash; small revisions are possible before filing season.</li>
       <li>North Carolina starts from federal AGI, not federal taxable income &mdash; it does <em>not</em> allow the federal QBI deduction, which this worksheet accounts for.</li>
       <li>Quarterly figures are your annual estimate divided by four. Real IRS/NCDOR safe-harbor rules (prior-year tax, uneven income via annualization) can change what's actually due on a given date &mdash; talk to a CPA if your income is lumpy or this is a high-stakes year.</li>
@@ -501,6 +626,16 @@
   const fmtPct = (n) => (n * 100).toFixed(1) + '%';
 
   let year = 2025;
+  let nextExpenseId = 0;
+  let expenses = [
+    { id: nextExpenseId++, label: 'Contractor & subcontractor payments', amount: 28000 },
+    { id: nextExpenseId++, label: 'Supplies & materials', amount: 9800 },
+    { id: nextExpenseId++, label: 'Software & tools', amount: 6500 },
+    { id: nextExpenseId++, label: 'Travel & meals', amount: 4300 },
+    { id: nextExpenseId++, label: 'Home office & utilities', amount: 4200 },
+    { id: nextExpenseId++, label: 'Insurance', amount: 3200 },
+    { id: nextExpenseId++, label: 'Other business expenses', amount: 4000 }
+  ];
 
   function progressiveTax(taxableIncome, brackets) {
     if (taxableIncome <= 0) return 0;
@@ -517,14 +652,32 @@
     return tax;
   }
 
-  function compute() {
+  function renderExpenseRows() {
+    const container = $('expenseRows');
+    container.innerHTML = expenses.map((row) => `
+      <div class="expense-row" data-id="${row.id}">
+        <input type="text" class="exp-label" value="${row.label.replace(/"/g, '&quot;')}" placeholder="Expense description">
+        <div class="money-input"><input type="number" class="exp-amount" value="${row.amount}" min="0" step="50" inputmode="decimal"></div>
+        <button type="button" class="row-remove" title="Remove">&times;</button>
+      </div>
+    `).join('');
+  }
+
+  function totalExpenses() {
+    return expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+  }
+
+  function compute(overrideGrossProfit) {
     const y = YEARS[year];
-    const profit = Math.max(0, parseFloat($('profit').value) || 0);
+    const revenue = Math.max(0, parseFloat($('revenue').value) || 0);
+    const grossProfit = overrideGrossProfit !== undefined
+      ? overrideGrossProfit
+      : Math.max(0, revenue - totalExpenses());
     const wages = Math.max(0, parseFloat($('wages').value) || 0);
     const applyQbi = $('qbi').checked;
 
     // --- Self-employment tax (Schedule SE) ---
-    const netSeEarnings = profit * 0.9235;
+    const netSeEarnings = grossProfit * 0.9235;
     const ssRoomLeft = Math.max(0, y.ssWageBase - wages);
     const ssTaxableSe = Math.min(netSeEarnings, ssRoomLeft);
     const ssTax = ssTaxableSe * 0.124;
@@ -540,9 +693,9 @@
 
     // --- Federal income tax ---
     const halfSeDeduction = seTaxDeductible / 2;
-    const agi = Math.max(0, profit - halfSeDeduction + wages);
+    const agi = Math.max(0, grossProfit - halfSeDeduction + wages);
 
-    const qbiBase = Math.max(0, profit - halfSeDeduction);
+    const qbiBase = Math.max(0, grossProfit - halfSeDeduction);
     let qbiDeduction = 0;
     let qbiLimited = false;
     if (applyQbi && qbiBase > 0) {
@@ -559,19 +712,26 @@
     const ncTax = ncTaxableIncome * y.ncRate;
 
     const totalAnnual = totalSeTax + federalTax + ncTax;
-    const totalIncome = profit + wages;
+    const totalIncome = grossProfit + wages;
     const effectiveRate = totalIncome > 0 ? totalAnnual / totalIncome : 0;
+    const netProfitAfterTax = grossProfit - totalAnnual;
 
     return {
-      y, profit, wages, applyQbi,
+      y, revenue, grossProfit, wages, applyQbi,
       netSeEarnings, ssTax, medicareTax, additionalMedicareTax, totalSeTax,
       agi, qbiDeduction, qbiLimited, federalTaxableIncome, federalTax,
       ncTaxableIncome, ncTax,
-      totalAnnual, effectiveRate
+      totalAnnual, effectiveRate, netProfitAfterTax
     };
   }
 
   function render() {
+    const totalExp = totalExpenses();
+    const revenue = Math.max(0, parseFloat($('revenue').value) || 0);
+    const grossProfit = Math.max(0, revenue - totalExp);
+    $('totalExpensesOut').textContent = fmt(-totalExp);
+    $('grossProfitOut').textContent = fmt(grossProfit);
+
     const r = compute();
     const y = r.y;
 
@@ -592,7 +752,7 @@
           <span class="section-total">${fmt(r.totalSeTax)}</span>
         </div>
         <div class="line-items">
-          <div class="line-item"><span class="li-label">Net SE earnings (92.35% of profit)</span><span class="li-value">${fmt(r.netSeEarnings)}</span></div>
+          <div class="line-item"><span class="li-label">Net SE earnings (92.35% of gross profit)</span><span class="li-value">${fmt(r.netSeEarnings)}</span></div>
           <div class="line-item sub"><span class="li-label">Social Security &middot; 12.4% up to ${fmt(y.ssWageBase)} wage base</span><span class="li-value">${fmt(r.ssTax)}</span></div>
           <div class="line-item sub"><span class="li-label">Medicare &middot; 2.9%, uncapped</span><span class="li-value">${fmt(r.medicareTax)}</span></div>
           <div class="line-item sub"><span class="li-label">Additional Medicare Tax &middot; 0.9% above ${fmt(y.addlMedicareThreshold)} joint</span><span class="li-value">${fmt(r.additionalMedicareTax)}</span></div>
@@ -626,17 +786,24 @@
         </div>
       </div>
 
-      <div class="quarter-tile">
-        <div class="qt-label">Estimated quarterly payment (1/4 of annual)</div>
-        <div class="qt-row">
-          <div class="qt-amount">${fmt(r.totalAnnual / 4)}</div>
-          <div class="qt-annual">Annual total<br><b>${fmt(r.totalAnnual)}</b></div>
+      <div class="outcome-grid">
+        <div class="quarter-tile">
+          <div class="qt-label">Estimated quarterly payment (1/4 of annual)</div>
+          <div class="qt-row">
+            <div class="qt-amount">${fmt(r.totalAnnual / 4)}</div>
+            <div class="qt-annual">Annual total<br><b>${fmt(r.totalAnnual)}</b></div>
+          </div>
+        </div>
+        <div class="keep-tile">
+          <div class="qt-label">Net profit after tax</div>
+          <div class="qt-amount">${fmt(r.netProfitAfterTax)}</div>
+          <div class="qt-sub">${fmt(r.grossProfit)} gross profit &minus; ${fmt(r.totalAnnual)} tax</div>
         </div>
       </div>
 
       <div class="rate-strip">
         <div class="rate-cell">
-          <div class="rc-label">On ${fmt(r.profit + r.wages)} total income</div>
+          <div class="rc-label">On ${fmt(r.grossProfit + r.wages)} total income</div>
           <div class="rc-value">${fmtPct(r.effectiveRate)} effective</div>
         </div>
         <div class="rate-cell">
@@ -662,10 +829,7 @@
   function marginalSetAside(r) {
     const bump = 1000;
     const before = r.totalAnnual;
-    const savedProfit = $('profit').value;
-    $('profit').value = r.profit + bump;
-    const after = compute().totalAnnual;
-    $('profit').value = savedProfit;
+    const after = compute(r.grossProfit + bump).totalAnnual;
     return (after - before) / bump;
   }
 
@@ -677,8 +841,35 @@
     });
   });
 
-  ['profit', 'wages', 'qbi'].forEach((id) => $(id).addEventListener('input', render));
+  $('addExpense').addEventListener('click', () => {
+    expenses.push({ id: nextExpenseId++, label: '', amount: 0 });
+    renderExpenseRows();
+    render();
+  });
 
+  $('expenseRows').addEventListener('input', (e) => {
+    const row = e.target.closest('.expense-row');
+    if (!row) return;
+    const id = Number(row.dataset.id);
+    const item = expenses.find((x) => x.id === id);
+    if (!item) return;
+    if (e.target.classList.contains('exp-label')) item.label = e.target.value;
+    if (e.target.classList.contains('exp-amount')) item.amount = parseFloat(e.target.value) || 0;
+    render();
+  });
+
+  $('expenseRows').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('row-remove')) return;
+    const row = e.target.closest('.expense-row');
+    const id = Number(row.dataset.id);
+    expenses = expenses.filter((x) => x.id !== id);
+    renderExpenseRows();
+    render();
+  });
+
+  ['revenue', 'wages', 'qbi'].forEach((id) => $(id).addEventListener('input', render));
+
+  renderExpenseRows();
   render();
 })();
 </script>
