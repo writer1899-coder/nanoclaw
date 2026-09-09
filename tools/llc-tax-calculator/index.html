@@ -1,0 +1,684 @@
+<title>NC LLC Tax Worksheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #f1f4f0;
+    --surface: #fdfefb;
+    --surface-2: #e9ede6;
+    --ink: #16231d;
+    --ink-soft: #55645b;
+    --ink-faint: #8a978d;
+    --pine: #1f4d3d;
+    --pine-soft: #e4ede8;
+    --gold: #92651e;
+    --gold-soft: #f3e6cf;
+    --line: #d7ddd2;
+    --line-strong: #b9c3b3;
+    --warn: #a1462e;
+    --warn-soft: #f5e3dd;
+    --focus: #1f4d3d;
+    --shadow: 0 1px 2px rgba(22, 35, 29, 0.06), 0 8px 24px -12px rgba(22, 35, 29, 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10160f;
+      --surface: #182018;
+      --surface-2: #202a20;
+      --ink: #e9efe6;
+      --ink-soft: #a7b3a3;
+      --ink-faint: #798377;
+      --pine: #6fb99a;
+      --pine-soft: #1d2c26;
+      --gold: #d9a75c;
+      --gold-soft: #2c2416;
+      --line: #2b352a;
+      --line-strong: #3c473a;
+      --warn: #e0806a;
+      --warn-soft: #2e1e19;
+      --focus: #6fb99a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 28px -12px rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #10160f;
+    --surface: #182018;
+    --surface-2: #202a20;
+    --ink: #e9efe6;
+    --ink-soft: #a7b3a3;
+    --ink-faint: #798377;
+    --pine: #6fb99a;
+    --pine-soft: #1d2c26;
+    --gold: #d9a75c;
+    --gold-soft: #2c2416;
+    --line: #2b352a;
+    --line-strong: #3c473a;
+    --warn: #e0806a;
+    --warn-soft: #2e1e19;
+    --focus: #6fb99a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 28px -12px rgba(0, 0, 0, 0.55);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.45;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
+  }
+
+  header.page-head {
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--pine);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 1px;
+    background: var(--pine);
+    transform: rotate(45deg);
+    flex: none;
+  }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+
+  .subhead {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 54ch;
+    margin: 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .panel {
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .panel-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 16px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field.span-2 { grid-column: 1 / -1; }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: -2px;
+  }
+
+  .money-input {
+    position: relative;
+  }
+  .money-input::before {
+    content: '$';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .money-input input {
+    padding-left: 26px;
+  }
+
+  input[type="number"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14.5px;
+    font-variant-numeric: tabular-nums;
+    appearance: none;
+  }
+  select {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-faint) 50%), linear-gradient(135deg, var(--ink-faint) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 4px;
+  }
+  .toggle-row input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: var(--pine);
+    flex: none;
+  }
+  .toggle-row .toggle-text { font-size: 13.5px; }
+  .toggle-row .toggle-text .hint { margin-top: 2px; }
+
+  .year-toggle {
+    display: inline-flex;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .year-toggle button {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 8px 14px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    border: none;
+    cursor: pointer;
+  }
+  .year-toggle button + button { border-left: 1px solid var(--line-strong); }
+  .year-toggle button[aria-pressed="true"] {
+    background: var(--pine);
+    color: var(--surface);
+  }
+
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin: 0;
+  }
+  .section-title .section-total {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .line-items { padding: 6px 24px 18px; }
+  .line-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 13.5px;
+  }
+  .line-item:last-child { border-bottom: none; }
+  .line-item .li-label { color: var(--ink-soft); }
+  .line-item .li-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .line-item.sub .li-label { padding-left: 14px; color: var(--ink-faint); font-size: 13px; }
+
+  .results { margin-top: 8px; }
+
+  .quarter-tile {
+    background: linear-gradient(155deg, var(--pine) 0%, color-mix(in srgb, var(--pine) 82%, black) 100%);
+    color: var(--surface);
+    border-radius: 10px;
+    padding: 26px 24px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+  }
+  .quarter-tile .qt-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 10px;
+  }
+  .quarter-tile .qt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .quarter-tile .qt-amount {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .quarter-tile .qt-annual {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    opacity: 0.85;
+    text-align: right;
+  }
+  .quarter-tile .qt-annual b {
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    display: block;
+  }
+
+  .rate-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .rate-cell {
+    background: var(--surface);
+    padding: 16px 18px;
+  }
+  .rate-cell .rc-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .rate-cell .rc-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .notes {
+    margin-top: 28px;
+    padding: 18px 20px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .notes h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--warn);
+    margin: 0 0 10px;
+  }
+  .notes ul { margin: 0; padding-left: 18px; }
+  .notes li { margin-bottom: 6px; }
+  .notes li:last-child { margin-bottom: 0; }
+
+  .figures-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    background: var(--gold-soft);
+    color: var(--gold);
+    padding: 3px 9px;
+    border-radius: 100px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 560px) {
+    .field-grid { grid-template-columns: 1fr; }
+    .quarter-tile .qt-amount { font-size: 32px; }
+    .rate-strip { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page-head">
+    <div class="eyebrow">Schedule&nbsp;C &middot; Schedule&nbsp;SE &middot; NC&nbsp;D-400</div>
+    <h1>What to send in this quarter</h1>
+    <p class="subhead">Estimate self-employment tax, federal income tax, and North Carolina income tax on your LLC's profit &mdash; married filing jointly, North Carolina resident.</p>
+  </header>
+
+  <div class="card panel">
+    <p class="panel-title">Your numbers</p>
+    <div class="field-grid">
+      <div class="field span-2">
+        <label for="profit">Net business profit this year (Schedule&nbsp;C, before tax)</label>
+        <div class="money-input"><input type="number" id="profit" value="120000" min="0" step="500" inputmode="decimal"></div>
+        <p class="hint">Business income minus business expenses &mdash; not revenue.</p>
+      </div>
+
+      <div class="field span-2">
+        <label for="wages">Other W-2 wages on the joint return this year <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+        <div class="money-input"><input type="number" id="wages" value="0" min="0" step="500" inputmode="decimal"></div>
+        <p class="hint">A spouse's job or your own W-2 income. Used to see how much Social Security wage base you have left and whether the Additional Medicare Tax kicks in.</p>
+      </div>
+
+      <div class="field">
+        <label>Tax year</label>
+        <div class="year-toggle" role="group" aria-label="Tax year">
+          <button type="button" data-year="2025" aria-pressed="true">2025</button>
+          <button type="button" data-year="2026" aria-pressed="false">2026</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="filing">Filing status &middot; State</label>
+        <select id="filing" disabled>
+          <option>Married filing jointly &middot; North Carolina</option>
+        </select>
+      </div>
+
+      <div class="field span-2 toggle-row">
+        <input type="checkbox" id="qbi" checked>
+        <div class="toggle-text">
+          <label for="qbi" style="font-weight:500;">Apply the 20% qualified business income (QBI) deduction</label>
+          <p class="hint">Assumes a non-SSTB business under the phase-out threshold. Above it, wage/property limits or SSTB rules can reduce or eliminate this &mdash; the worksheet flags it if you're close.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <div class="notes">
+    <h3>Read this before you send money to anyone</h3>
+    <ul>
+      <li>This is a planning estimate, not a filed return. It assumes the standard deduction, one QBI-eligible business, and no other income, credits, or itemized deductions.</li>
+      <li>2026 federal brackets and QBI/SS figures reflect preliminary post&#8209;OBBBA inflation adjustments reported ahead of the IRS's final published tables &mdash; small revisions are possible before filing season.</li>
+      <li>North Carolina starts from federal AGI, not federal taxable income &mdash; it does <em>not</em> allow the federal QBI deduction, which this worksheet accounts for.</li>
+      <li>Quarterly figures are your annual estimate divided by four. Real IRS/NCDOR safe-harbor rules (prior-year tax, uneven income via annualization) can change what's actually due on a given date &mdash; talk to a CPA if your income is lumpy or this is a high-stakes year.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function () {
+  const YEARS = {
+    2025: {
+      label: '2025',
+      ssWageBase: 176100,
+      addlMedicareThreshold: 250000,
+      qbiPhaseIn: 394600,
+      qbiPhaseOut: 494600,
+      standardDeduction: 30000,
+      brackets: [
+        [0, 0.10], [23850, 0.12], [96950, 0.22], [206700, 0.24],
+        [394600, 0.32], [501050, 0.35], [751600, 0.37]
+      ],
+      ncRate: 0.0425,
+      ncStandardDeduction: 25500,
+      estimated: false
+    },
+    2026: {
+      label: '2026',
+      ssWageBase: 184500,
+      addlMedicareThreshold: 250000,
+      qbiPhaseIn: 403500,
+      qbiPhaseOut: 503500,
+      standardDeduction: 32200,
+      brackets: [
+        [0, 0.10], [24800, 0.12], [100800, 0.22], [211400, 0.24],
+        [403550, 0.32], [512450, 0.35], [768700, 0.37]
+      ],
+      ncRate: 0.0399,
+      ncStandardDeduction: 25500,
+      estimated: true
+    }
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => n < 0 ? '−$' + Math.abs(Math.round(n)).toLocaleString('en-US') : '$' + Math.round(n).toLocaleString('en-US');
+  const fmtPct = (n) => (n * 100).toFixed(1) + '%';
+
+  let year = 2025;
+
+  function progressiveTax(taxableIncome, brackets) {
+    if (taxableIncome <= 0) return 0;
+    let tax = 0;
+    for (let i = 0; i < brackets.length; i++) {
+      const [floor, rate] = brackets[i];
+      const nextFloor = i + 1 < brackets.length ? brackets[i + 1][0] : Infinity;
+      if (taxableIncome > floor) {
+        tax += (Math.min(taxableIncome, nextFloor) - floor) * rate;
+      } else {
+        break;
+      }
+    }
+    return tax;
+  }
+
+  function compute() {
+    const y = YEARS[year];
+    const profit = Math.max(0, parseFloat($('profit').value) || 0);
+    const wages = Math.max(0, parseFloat($('wages').value) || 0);
+    const applyQbi = $('qbi').checked;
+
+    // --- Self-employment tax (Schedule SE) ---
+    const netSeEarnings = profit * 0.9235;
+    const ssRoomLeft = Math.max(0, y.ssWageBase - wages);
+    const ssTaxableSe = Math.min(netSeEarnings, ssRoomLeft);
+    const ssTax = ssTaxableSe * 0.124;
+    const medicareTax = netSeEarnings * 0.029;
+    const seTaxDeductible = ssTax + medicareTax;
+
+    const combinedForAddl = wages + netSeEarnings;
+    const addlBefore = Math.max(0, wages - y.addlMedicareThreshold);
+    const addlAfter = Math.max(0, combinedForAddl - y.addlMedicareThreshold);
+    const additionalMedicareTax = (addlAfter - addlBefore) * 0.009;
+
+    const totalSeTax = ssTax + medicareTax + additionalMedicareTax;
+
+    // --- Federal income tax ---
+    const halfSeDeduction = seTaxDeductible / 2;
+    const agi = Math.max(0, profit - halfSeDeduction + wages);
+
+    const qbiBase = Math.max(0, profit - halfSeDeduction);
+    let qbiDeduction = 0;
+    let qbiLimited = false;
+    if (applyQbi && qbiBase > 0) {
+      const taxableBeforeQbi = Math.max(0, agi - y.standardDeduction);
+      qbiDeduction = Math.min(qbiBase * 0.20, taxableBeforeQbi * 0.20);
+      qbiLimited = agi > y.qbiPhaseIn;
+    }
+
+    const federalTaxableIncome = Math.max(0, agi - y.standardDeduction - qbiDeduction);
+    const federalTax = progressiveTax(federalTaxableIncome, y.brackets);
+
+    // --- North Carolina income tax (starts from federal AGI, no QBI deduction) ---
+    const ncTaxableIncome = Math.max(0, agi - y.ncStandardDeduction);
+    const ncTax = ncTaxableIncome * y.ncRate;
+
+    const totalAnnual = totalSeTax + federalTax + ncTax;
+    const totalIncome = profit + wages;
+    const effectiveRate = totalIncome > 0 ? totalAnnual / totalIncome : 0;
+
+    return {
+      y, profit, wages, applyQbi,
+      netSeEarnings, ssTax, medicareTax, additionalMedicareTax, totalSeTax,
+      agi, qbiDeduction, qbiLimited, federalTaxableIncome, federalTax,
+      ncTaxableIncome, ncTax,
+      totalAnnual, effectiveRate
+    };
+  }
+
+  function render() {
+    const r = compute();
+    const y = r.y;
+
+    const estimatedBadge = y.estimated
+      ? '<span class="figures-note">preliminary ' + y.label + ' figures</span>'
+      : '';
+
+    const qbiNote = r.applyQbi
+      ? (r.qbiLimited
+          ? '<div class="line-item sub"><span class="li-label">Your AGI is above the ' + fmt(y.qbiPhaseIn) + ' QBI phase-in threshold &mdash; wage/property or SSTB limits may reduce this. Shown at the full 20%.</span><span class="li-value"></span></div>'
+          : '')
+      : '<div class="line-item sub"><span class="li-label">QBI deduction not applied</span><span class="li-value">&mdash;</span></div>';
+
+    $('results').innerHTML = `
+      <div class="card">
+        <div class="section-title">
+          <h2>Self-employment tax ${estimatedBadge}</h2>
+          <span class="section-total">${fmt(r.totalSeTax)}</span>
+        </div>
+        <div class="line-items">
+          <div class="line-item"><span class="li-label">Net SE earnings (92.35% of profit)</span><span class="li-value">${fmt(r.netSeEarnings)}</span></div>
+          <div class="line-item sub"><span class="li-label">Social Security &middot; 12.4% up to ${fmt(y.ssWageBase)} wage base</span><span class="li-value">${fmt(r.ssTax)}</span></div>
+          <div class="line-item sub"><span class="li-label">Medicare &middot; 2.9%, uncapped</span><span class="li-value">${fmt(r.medicareTax)}</span></div>
+          <div class="line-item sub"><span class="li-label">Additional Medicare Tax &middot; 0.9% above ${fmt(y.addlMedicareThreshold)} joint</span><span class="li-value">${fmt(r.additionalMedicareTax)}</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="section-title">
+          <h2>Federal income tax</h2>
+          <span class="section-total">${fmt(r.federalTax)}</span>
+        </div>
+        <div class="line-items">
+          <div class="line-item"><span class="li-label">Adjusted gross income</span><span class="li-value">${fmt(r.agi)}</span></div>
+          <div class="line-item sub"><span class="li-label">Less: standard deduction (MFJ)</span><span class="li-value">${fmt(-y.standardDeduction)}</span></div>
+          <div class="line-item sub"><span class="li-label">Less: QBI deduction</span><span class="li-value">${fmt(-r.qbiDeduction)}</span></div>
+          ${qbiNote}
+          <div class="line-item"><span class="li-label">Taxable income</span><span class="li-value">${fmt(r.federalTaxableIncome)}</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="section-title">
+          <h2>North Carolina income tax</h2>
+          <span class="section-total">${fmt(r.ncTax)}</span>
+        </div>
+        <div class="line-items">
+          <div class="line-item"><span class="li-label">Federal AGI (NC doesn't allow the QBI deduction)</span><span class="li-value">${fmt(r.agi)}</span></div>
+          <div class="line-item sub"><span class="li-label">Less: NC standard deduction (MFJ)</span><span class="li-value">${fmt(-y.ncStandardDeduction)}</span></div>
+          <div class="line-item"><span class="li-label">NC taxable income</span><span class="li-value">${fmt(r.ncTaxableIncome)}</span></div>
+          <div class="line-item sub"><span class="li-label">Flat rate &middot; ${fmtPct(y.ncRate)}</span><span class="li-value"></span></div>
+        </div>
+      </div>
+
+      <div class="quarter-tile">
+        <div class="qt-label">Estimated quarterly payment (1/4 of annual)</div>
+        <div class="qt-row">
+          <div class="qt-amount">${fmt(r.totalAnnual / 4)}</div>
+          <div class="qt-annual">Annual total<br><b>${fmt(r.totalAnnual)}</b></div>
+        </div>
+      </div>
+
+      <div class="rate-strip">
+        <div class="rate-cell">
+          <div class="rc-label">On ${fmt(r.profit + r.wages)} total income</div>
+          <div class="rc-value">${fmtPct(r.effectiveRate)} effective</div>
+        </div>
+        <div class="rate-cell">
+          <div class="rc-label">Federal marginal rate</div>
+          <div class="rc-value">${fmtPct(marginalRate(r.federalTaxableIncome, y.brackets))}</div>
+        </div>
+        <div class="rate-cell">
+          <div class="rc-label">Set aside per $1 of new profit</div>
+          <div class="rc-value">~${fmtPct(marginalSetAside(r))}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function marginalRate(taxableIncome, brackets) {
+    let rate = brackets[0][1];
+    for (const [floor, r] of brackets) {
+      if (taxableIncome >= floor) rate = r;
+    }
+    return rate;
+  }
+
+  function marginalSetAside(r) {
+    const bump = 1000;
+    const before = r.totalAnnual;
+    const savedProfit = $('profit').value;
+    $('profit').value = r.profit + bump;
+    const after = compute().totalAnnual;
+    $('profit').value = savedProfit;
+    return (after - before) / bump;
+  }
+
+  document.querySelectorAll('.year-toggle button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      year = parseInt(btn.dataset.year, 10);
+      document.querySelectorAll('.year-toggle button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      render();
+    });
+  });
+
+  ['profit', 'wages', 'qbi'].forEach((id) => $(id).addEventListener('input', render));
+
+  render();
+})();
+</script>
