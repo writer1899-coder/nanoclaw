@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- page:start -->
+<title>Owner Pay Planner 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --ground: #f1f4f2;
+    --surface: #ffffff;
+    --surface-2: #f7f9f8;
+    --ink: #14201b;
+    --muted: #5a6a63;
+    --line: #d3dcd7;
+    --accent: #0e6b58;
+    --accent-ink: #ffffff;
+    --accent-soft: #e0eee9;
+    --good: #1e7a46;
+    --good-soft: #e1f2e7;
+    --warn: #9a5f0c;
+    --warn-soft: #fbefd9;
+    --bad: #b3261e;
+    --bad-soft: #fbe3e1;
+    --sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #0d1311;
+      --surface: #141c19;
+      --surface-2: #19231f;
+      --ink: #e2ebe7;
+      --muted: #93a49d;
+      --line: #27332e;
+      --accent: #4cc2a4;
+      --accent-ink: #062019;
+      --accent-soft: #15302a;
+      --good: #5ccf8e;
+      --good-soft: #143322;
+      --warn: #e8b35c;
+      --warn-soft: #3a2a10;
+      --bad: #f28b82;
+      --bad-soft: #3d1a17;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #0d1311;
+    --surface: #141c19;
+    --surface-2: #19231f;
+    --ink: #e2ebe7;
+    --muted: #93a49d;
+    --line: #27332e;
+    --accent: #4cc2a4;
+    --accent-ink: #062019;
+    --accent-soft: #15302a;
+    --good: #5ccf8e;
+    --good-soft: #143322;
+    --warn: #e8b35c;
+    --warn-soft: #3a2a10;
+    --bad: #f28b82;
+    --bad-soft: #3d1a17;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 15px/1.5 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(24px, 3.2vw, 32px); font-weight: 700; letter-spacing: -0.015em; }
+  h2 { font-size: 18px; font-weight: 650; }
+  h3 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  p { margin: 0; }
+  .num, td.n, .money { font-variant-numeric: tabular-nums; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  header.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
+  header.top .lede { color: var(--muted); max-width: 64ch; margin-top: 6px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+
+  .layout { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Inputs */
+  form.inputs { display: flex; flex-direction: column; gap: 10px; }
+  .example-note { font-size: 13px; color: var(--warn); background: var(--warn-soft); padding: 10px 12px; border-radius: 8px; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .example-note.mine { color: var(--muted); background: var(--surface); border: 1px solid var(--line); }
+  details.group { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  details.group > summary { list-style: none; cursor: pointer; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 600; }
+  details.group > summary::-webkit-details-marker { display: none; }
+  details.group > summary::after { content: '+'; color: var(--muted); font-weight: 500; font-size: 18px; line-height: 1; }
+  details.group[open] > summary::after { content: '–'; }
+  details.group > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 10px; }
+  .group-body { padding: 2px 14px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+  .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .field.full { grid-column: 1 / -1; }
+  .field label, .field .label { font-size: 12.5px; font-weight: 500; color: var(--muted); }
+  .hint, .field .hint { font-size: 12px; line-height: 1.45; color: var(--muted); }
+  .money-input { position: relative; }
+  .money-input::before { content: '$'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
+  .money-input.pct::before { content: '%'; left: auto; right: 10px; }
+  input[type="text"], input[type="date"], select {
+    width: 100%; font: 500 14px/1.2 var(--sans); color: var(--ink); background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: 7px; padding: 9px 10px; font-variant-numeric: tabular-nums;
+  }
+  .money-input input { padding-left: 22px; }
+  .money-input.pct input { padding-left: 10px; padding-right: 26px; }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .check { flex-direction: row; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink); }
+  .check input { width: 16px; height: 16px; accent-color: var(--accent); margin: 0; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .seg label { display: block; border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; cursor: pointer; background: var(--surface-2); font-size: 13px; }
+  .seg label strong { display: block; font-size: 13.5px; color: var(--ink); }
+  .seg label span { color: var(--muted); font-size: 12px; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button { font: 600 13px/1 var(--sans); border-radius: 7px; padding: 8px 12px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  /* Results */
+  .results { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; }
+  .panel-head p { color: var(--muted); font-size: 13px; }
+
+  /* 1040-ES voucher */
+  .voucher { position: relative; background: var(--surface); border: 1.5px dashed var(--accent); border-radius: 12px; padding: 20px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px 28px; }
+  @media (max-width: 620px) { .voucher { grid-template-columns: minmax(0, 1fr); } }
+  .voucher .form-id { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.04em; }
+  .voucher .due { font-size: 15px; color: var(--muted); margin-top: 2px; }
+  .voucher .amount { font-family: var(--mono); font-weight: 600; font-size: clamp(34px, 5.5vw, 48px); letter-spacing: -0.02em; line-height: 1.1; margin-top: 10px; color: var(--ink); }
+  .voucher .sub { color: var(--muted); font-size: 13.5px; margin-top: 8px; max-width: 48ch; }
+  .voucher .split { display: flex; flex-direction: column; gap: 8px; align-self: center; }
+  .kv { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
+  .kv:last-child { border-bottom: 0; padding-bottom: 0; }
+  .kv span:first-child { color: var(--muted); }
+  .kv span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 1060px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .stat .v { font-family: var(--mono); font-weight: 600; font-size: 22px; letter-spacing: -0.01em; }
+  .stat .k { font-size: 12.5px; color: var(--muted); }
+  .stat .d { font-size: 12px; color: var(--muted); }
+
+  .alert { border-radius: 10px; padding: 12px 14px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+  .alert.warn { background: var(--warn-soft); color: var(--warn); }
+  .alert.bad { background: var(--bad-soft); color: var(--bad); }
+  .alert.good { background: var(--good-soft); color: var(--good); }
+  .alert strong { font-weight: 650; }
+  .alert p { color: var(--ink); opacity: 0.85; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+  .table-wrap.tall { max-height: 460px; overflow-y: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); position: sticky; top: 0; z-index: 1; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: 0; }
+  tr.past td { color: var(--muted); }
+  tr.est td { background: var(--accent-soft); font-weight: 600; }
+  tr.est td:first-child { color: var(--accent); }
+  td.neg { color: var(--bad); }
+  .pill { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+  .pill.paid { background: var(--good-soft); color: var(--good); }
+  .pill.short, .pill.partial { background: var(--warn-soft); color: var(--warn); }
+  .pill.missed { background: var(--bad-soft); color: var(--bad); }
+  .pill.upcoming { background: var(--accent-soft); color: var(--accent); }
+
+  .ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
+  @media (max-width: 760px) { .ledger { grid-template-columns: minmax(0, 1fr); } }
+  .ledger section { display: flex; flex-direction: column; }
+  .ledger h3 { margin-bottom: 6px; }
+  .line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 6px 0; border-bottom: 1px dotted var(--line); font-size: 13.5px; }
+  .line .ref { color: var(--muted); font-size: 11.5px; font-family: var(--mono); margin-left: 6px; }
+  .line .amt { font-variant-numeric: tabular-nums; text-align: right; }
+  .line.total { border-bottom: 1.5px solid var(--ink); font-weight: 650; }
+  .line.sub .lbl { padding-left: 14px; color: var(--muted); }
+  .line .note { grid-column: 1 / -1; color: var(--muted); font-size: 12px; margin-top: -2px; }
+
+  .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 28px; }
+  @media (max-width: 760px) { .notes { grid-template-columns: minmax(0, 1fr); } }
+  .notes div { font-size: 13.5px; color: var(--ink); }
+  .notes div strong { display: block; margin-bottom: 2px; }
+  .notes div p { color: var(--muted); }
+  footer.fine { color: var(--muted); font-size: 12.5px; margin-top: 28px; max-width: 90ch; }
+  @media (prefers-reduced-motion: no-preference) { .voucher .amount { transition: color .2s; } }
+</style>
+<!-- head:end -->
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Owner Pay Planner 2026</h1>
+      <p class="lede">Plan owner draws from your LLC and the quarterly Form 1040-ES payments behind them. You pay yourself with draws, not W-2 payroll, so the tax is on the LLC's profit: self-employment tax plus income tax on your joint return.</p>
+    </div>
+    <div class="tags">
+      <span class="tag">Tax year 2026</span>
+      <span class="tag">Married filing jointly</span>
+      <span class="tag">Schedule C / SE</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <form class="inputs" id="inputs" autocomplete="off">
+      <div class="example-note" id="example-note">
+        <span id="example-text">These are example figures. Replace them with yours; they stay in this browser only.</span>
+        <button type="button" id="reset">Reset to example</button>
+      </div>
+
+      <details class="group" open>
+        <summary>LLC income for 2026</summary>
+        <div class="group-body">
+          <div class="field"><label for="revenue">Gross revenue</label><div class="money-input"><input type="text" inputmode="decimal" id="revenue" name="revenue"></div></div>
+          <div class="field"><label for="expenses">Business expenses</label><div class="money-input"><input type="text" inputmode="decimal" id="expenses" name="expenses"></div></div>
+          <div class="field"><label for="yourOwnershipPct">Your ownership</label><div class="money-input pct"><input type="text" inputmode="decimal" id="yourOwnershipPct" name="yourOwnershipPct"></div></div>
+          <div class="field"><label for="spouseOwnershipPct">Spouse ownership</label><div class="money-input pct"><input type="text" inputmode="decimal" id="spouseOwnershipPct" name="spouseOwnershipPct"></div></div>
+          <p class="hint field full">Full-year projection. Single-member LLC: 100% / 0%. If you and your spouse both own it, each of you pays SE tax on your share.</p>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Quarterly payments</summary>
+        <div class="group-body">
+          <div class="field full">
+            <span class="label">How much to pay each quarter</span>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="strategy" value="safeHarbor"><strong>Safe harbor</strong><span>Least you can pay without a penalty</span></label>
+              <label><input type="radio" name="strategy" value="payInFull"><strong>Pay in full</strong><span>Owe close to $0 in April</span></label>
+            </div>
+          </div>
+          <div class="field"><label for="priorYearTax">2025 total tax</label><div class="money-input"><input type="text" inputmode="decimal" id="priorYearTax" name="priorYearTax" placeholder="Leave blank if unknown"></div></div>
+          <div class="field"><label for="priorYearAgi">2025 AGI</label><div class="money-input"><input type="text" inputmode="decimal" id="priorYearAgi" name="priorYearAgi"></div></div>
+          <p class="hint field full">From your 2025 Form 1040: total tax is line 24, AGI is line 11. Over $150,000 AGI, the safe harbor is 110% of last year's tax.</p>
+          <div class="field"><label for="paid0">Paid for Q1 (Apr 15)</label><div class="money-input"><input type="text" inputmode="decimal" id="paid0" name="paid0"></div></div>
+          <div class="field"><label for="paid1">Paid for Q2 (Jun 15)</label><div class="money-input"><input type="text" inputmode="decimal" id="paid1" name="paid1"></div></div>
+          <div class="field"><label for="paid2">Paid for Q3 (Sep 15)</label><div class="money-input"><input type="text" inputmode="decimal" id="paid2" name="paid2"></div></div>
+          <div class="field"><label for="paid3">Paid for Q4 (Jan 15, 2027)</label><div class="money-input"><input type="text" inputmode="decimal" id="paid3" name="paid3"></div></div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Owner draws</summary>
+        <div class="group-body">
+          <div class="field"><label for="drawFrequency">Pay yourself</label>
+            <select id="drawFrequency" name="drawFrequency">
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Every two weeks</option>
+              <option value="semimonthly">Twice a month</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+            </select>
+          </div>
+          <div class="field"><label for="statePct">State tax set-aside</label><div class="money-input pct"><input type="text" inputmode="decimal" id="statePct" name="statePct"></div></div>
+          <p class="hint field full">State set-aside is a flat share of LLC profit. Use 0 in a state with no income tax; check your state's own estimated-payment rules.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Household wages and other income</summary>
+        <div class="group-body">
+          <div class="field"><label for="yourW2Wages">Your W-2 wages (other jobs)</label><div class="money-input"><input type="text" inputmode="decimal" id="yourW2Wages" name="yourW2Wages"></div></div>
+          <div class="field"><label for="spouseW2Wages">Spouse W-2 wages</label><div class="money-input"><input type="text" inputmode="decimal" id="spouseW2Wages" name="spouseW2Wages"></div></div>
+          <div class="field full"><label for="federalWithholding">Federal tax withheld from all W-2s (full year)</label><div class="money-input"><input type="text" inputmode="decimal" id="federalWithholding" name="federalWithholding"></div></div>
+          <div class="field"><label for="interest">Taxable interest</label><div class="money-input"><input type="text" inputmode="decimal" id="interest" name="interest"></div></div>
+          <div class="field"><label for="ordinaryDividends">Ordinary dividends</label><div class="money-input"><input type="text" inputmode="decimal" id="ordinaryDividends" name="ordinaryDividends"></div></div>
+          <div class="field"><label for="qualifiedDividends">Qualified dividends (part of ordinary)</label><div class="money-input"><input type="text" inputmode="decimal" id="qualifiedDividends" name="qualifiedDividends"></div></div>
+          <div class="field"><label for="otherIncome">Other income</label><div class="money-input"><input type="text" inputmode="decimal" id="otherIncome" name="otherIncome"></div></div>
+          <div class="field"><label for="shortTermGains">Short-term gain / loss</label><div class="money-input"><input type="text" inputmode="decimal" id="shortTermGains" name="shortTermGains"></div></div>
+          <div class="field"><label for="longTermGains">Long-term gain / loss</label><div class="money-input"><input type="text" inputmode="decimal" id="longTermGains" name="longTermGains"></div></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Health, retirement and other adjustments</summary>
+        <div class="group-body">
+          <div class="field"><label for="seHealthInsurance">Health insurance premiums</label><div class="money-input"><input type="text" inputmode="decimal" id="seHealthInsurance" name="seHealthInsurance"></div></div>
+          <div class="field"><label for="retirementContributions">SEP-IRA / Solo 401(k)</label><div class="money-input"><input type="text" inputmode="decimal" id="retirementContributions" name="retirementContributions"></div></div>
+          <div class="field"><label for="hsaContributions">HSA contributions</label><div class="money-input"><input type="text" inputmode="decimal" id="hsaContributions" name="hsaContributions"></div></div>
+          <div class="field"><label for="otherAdjustments">Other adjustments</label><div class="money-input"><input type="text" inputmode="decimal" id="otherAdjustments" name="otherAdjustments"></div></div>
+          <p class="hint field full" id="retirement-hint"></p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Deductions, dependents and credits</summary>
+        <div class="group-body">
+          <div class="field"><label for="saltPaid">State and local taxes paid</label><div class="money-input"><input type="text" inputmode="decimal" id="saltPaid" name="saltPaid"></div></div>
+          <div class="field"><label for="mortgageInterest">Mortgage interest</label><div class="money-input"><input type="text" inputmode="decimal" id="mortgageInterest" name="mortgageInterest"></div></div>
+          <div class="field"><label for="charitableCash">Charitable gifts</label><div class="money-input"><input type="text" inputmode="decimal" id="charitableCash" name="charitableCash"></div></div>
+          <div class="field"><label for="otherItemized">Other itemized</label><div class="money-input"><input type="text" inputmode="decimal" id="otherItemized" name="otherItemized"></div></div>
+          <div class="field"><label for="childrenUnder17">Children under 17</label><input type="text" inputmode="numeric" id="childrenUnder17" name="childrenUnder17"></div>
+          <div class="field"><label for="otherDependents">Other dependents</label><input type="text" inputmode="numeric" id="otherDependents" name="otherDependents"></div>
+          <div class="field full"><label for="otherCredits">Other nonrefundable credits</label><div class="money-input"><input type="text" inputmode="decimal" id="otherCredits" name="otherCredits"></div></div>
+          <label class="field check"><input type="checkbox" id="you65" name="you65"> You are 65 or older</label>
+          <label class="field check"><input type="checkbox" id="spouse65" name="spouse65"> Spouse is 65 or older</label>
+          <p class="hint field full">The planner uses whichever is larger: the $32,200 standard deduction or your itemized total.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>QBI deduction details</summary>
+        <div class="group-body">
+          <label class="field check full"><input type="checkbox" id="sstb" name="sstb"> Service business (consulting, law, health, finance, performing arts…)</label>
+          <div class="field"><label for="llcW2WagesPaid">W-2 wages the LLC pays employees</label><div class="money-input"><input type="text" inputmode="decimal" id="llcW2WagesPaid" name="llcW2WagesPaid"></div></div>
+          <div class="field"><label for="ubia">Business property cost (UBIA)</label><div class="money-input"><input type="text" inputmode="decimal" id="ubia" name="ubia"></div></div>
+          <p class="hint field full">These only matter when 2026 taxable income is above $403,500.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Settings</summary>
+        <div class="group-body">
+          <div class="field"><label for="asOf">Plan as of</label><input type="date" id="asOf" name="asOf"></div>
+          <div class="field"><label for="penaltyRatePct">IRS underpayment rate</label><div class="money-input pct"><input type="text" inputmode="decimal" id="penaltyRatePct" name="penaltyRatePct"></div></div>
+          <p class="hint field full">The IRS resets the underpayment rate each quarter; the penalty shown is an estimate.</p>
+        </div>
+      </details>
+    </form>
+
+    <main class="results" id="results" aria-live="polite"></main>
+  </div>
+
+  <footer class="fine">
+    Figures: IRS Rev. Proc. 2025-32 (2026 brackets, $32,200 standard deduction, capital-gain breakpoints, $403,500 QBI threshold), the One Big Beautiful Bill Act (QBI phase-in, $40,400 SALT cap, senior deduction, $2,200 child tax credit), the 2026 Social Security wage base of $184,500 and IRS Notice 2025-67 retirement limits. Not modeled: alternative minimum tax, the itemized-deduction limit for the 37% bracket, the annualized-income method (Form 2210 Schedule AI), passive-loss rules and state-specific rules. This is a planning estimate, not tax advice; confirm your numbers with a tax professional before you file.
+  </footer>
+</div>
+
+<script src="tax2026.js"></script>
+<script>
+(function () {
+  'use strict';
+  const T = globalThis.LLCTax2026;
+  const STORE_KEY = 'owner-pay-planner-2026';
+  const form = document.getElementById('inputs');
+  const out = document.getElementById('results');
+
+  const EXAMPLE = {
+    revenue: '185,000', expenses: '42,000', yourOwnershipPct: '100', spouseOwnershipPct: '0',
+    strategy: 'safeHarbor', priorYearTax: '26,500', priorYearAgi: '178,000',
+    paid0: '7,300', paid1: '7,300', paid2: '4,000', paid3: '',
+    drawFrequency: 'semimonthly', statePct: '5',
+    yourW2Wages: '0', spouseW2Wages: '72,000', federalWithholding: '6,200',
+    interest: '900', ordinaryDividends: '1,400', qualifiedDividends: '1,100', otherIncome: '0',
+    shortTermGains: '0', longTermGains: '2,500',
+    seHealthInsurance: '11,400', retirementContributions: '18,000', hsaContributions: '0', otherAdjustments: '0',
+    saltPaid: '14,000', mortgageInterest: '9,800', charitableCash: '2,500', otherItemized: '0',
+    childrenUnder17: '2', otherDependents: '0', otherCredits: '0', you65: false, spouse65: false,
+    sstb: false, llcW2WagesPaid: '0', ubia: '0',
+    asOf: '', penaltyRatePct: '7',
+  };
+
+  const fmt0 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  const money = (v) => {
+    const r = Math.round(v);
+    return (r < 0 ? '−' : '') + fmt0.format(Math.abs(r));
+  };
+  const pct = (v, d = 1) => (v * 100).toFixed(d).replace(/\.0$/, '') + '%';
+  const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  const longDate = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  const d = (iso) => dateFmt.format(new Date(iso + 'T00:00:00Z'));
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const todayIso = () => {
+    const n = new Date();
+    return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())).toISOString().slice(0, 10);
+  };
+
+  function readForm() {
+    const v = {};
+    for (const el of form.elements) {
+      if (!el.name) continue;
+      if (el.type === 'checkbox') v[el.name] = el.checked;
+      else if (el.type === 'radio') { if (el.checked) v[el.name] = el.value; }
+      else v[el.name] = el.value;
+    }
+    return v;
+  }
+
+  function writeForm(v) {
+    for (const el of form.elements) {
+      if (!el.name || !(el.name in v)) continue;
+      if (el.type === 'checkbox') el.checked = !!v[el.name];
+      else if (el.type === 'radio') el.checked = el.value === v[el.name];
+      else el.value = v[el.name] ?? '';
+    }
+    if (!form.elements.asOf.value) form.elements.asOf.value = todayIso();
+  }
+
+  function toEngine(v) {
+    return { ...v, estimatedPaid: [v.paid0, v.paid1, v.paid2, v.paid3], asOf: v.asOf || todayIso() };
+  }
+
+  function save(v) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (_e) { /* storage unavailable */ }
+  }
+  function load() {
+    try { const s = localStorage.getItem(STORE_KEY); return s ? JSON.parse(s) : null; } catch (_e) { return null; }
+  }
+
+  const line = (label, amount, opts = {}) =>
+    `<div class="line${opts.cls ? ' ' + opts.cls : ''}"><span class="lbl">${label}${opts.ref ? `<span class="ref">${opts.ref}</span>` : ''}</span><span class="amt">${money(amount)}</span>${opts.note ? `<span class="note">${esc(opts.note)}</span>` : ''}</div>`;
+
+  function render(persist) {
+    const v = readForm();
+    if (persist) save(v);
+    const o = T.run(toEngine(v));
+    const r = o.result, p = o.plan, dr = o.draws;
+    const next = p.nextQuarter;
+
+    document.getElementById('retirement-hint').textContent =
+      r.householdProfit > 0
+        ? `Your 2026 limit from this LLC is about ${money(o.retirement.sepMax)} for a SEP-IRA or ${money(o.retirement.solo401kMax)} for a Solo 401(k) (under 50; add ${money(o.retirement.catchUp50)} catch-up at 50+). Premiums are deductible only for months neither of you could join an employer's plan.`
+        : '';
+
+    // --- Next payment voucher
+    let voucher;
+    if (next) {
+      const amountNow = p.catchUpNow + next.recommended;
+      const dueLabel = longDate.format(new Date(next.due + 'T00:00:00Z'));
+      voucher = `
+      <section class="voucher" aria-label="Next estimated payment">
+        <div>
+          <div class="form-id">FORM 1040-ES · 2026 · VOUCHER ${next.quarter}</div>
+          <div class="due">${p.catchUpNow > 0 ? 'Pay the catch-up now, then the rest by' : 'Due'} ${dueLabel}</div>
+          <div class="amount">${money(amountNow)}</div>
+          <p class="sub">${p.catchUpNow > 0
+            ? `Includes ${money(p.catchUpNow)} to cover earlier quarters that were paid short. Paying it now stops more penalty from building up.`
+            : `Pay at IRS Direct Pay or through your IRS online account and choose “1040-ES estimated tax” for 2026.`}</p>
+        </div>
+        <div class="split">
+          ${p.catchUpNow > 0 ? `<div class="kv"><span>Catch-up for earlier quarters, pay now</span><span>${money(p.catchUpNow)}</span></div>` : ''}
+          <div class="kv"><span>Q${next.quarter} installment, due ${d(next.due)}</span><span>${money(next.recommended)}</span></div>
+          <div class="kv"><span>Paid so far in 2026</span><span>${money(p.paidTotal)}</span></div>
+          <div class="kv"><span>Estimated payments needed for 2026</span><span>${money(p.estimatesNeeded)}</span></div>
+          <div class="kv"><span>${p.balanceDueAtFiling >= 0 ? 'Left to pay by April 15, 2027' : 'Expected refund'}</span><span>${money(Math.abs(p.balanceDueAtFiling))}</span></div>
+        </div>
+      </section>`;
+    } else {
+      voucher = `
+      <section class="voucher" aria-label="Balance due with your return">
+        <div>
+          <div class="form-id">FORM 1040 · 2026 · BALANCE DUE</div>
+          <div class="due">All four 2026 installment dates have passed. Pay the rest with your return by April 15, 2027.</div>
+          <div class="amount">${money(Math.max(0, p.currentTax - p.withholding - p.paidTotal))}</div>
+        </div>
+        <div class="split">
+          <div class="kv"><span>Paid in estimates</span><span>${money(p.paidTotal)}</span></div>
+          <div class="kv"><span>Withholding</span><span>${money(p.withholding)}</span></div>
+        </div>
+      </section>`;
+    }
+
+    // --- Alerts
+    const alerts = [];
+    if (p.noPenaltyPossible) {
+      alerts.push(`<div class="alert good"><strong>No estimated-tax penalty applies.</strong><p>Your 2026 tax after withholding is under $1,000.</p></div>`);
+    } else if (p.penaltyIfFollowPlan > 1 || p.penaltyIfNoMorePayments > 1) {
+      alerts.push(`<div class="alert ${p.penaltyIfFollowPlan > 1 ? 'warn' : 'good'}"><strong>Underpayment penalty: about ${money(p.penaltyIfFollowPlan)} if you follow this plan, ${money(p.penaltyIfNoMorePayments)} if you pay nothing more until April.</strong>
+        <p>${r.input.spouseW2Wages > 0 || r.input.yourW2Wages > 0 ? 'W-2 withholding counts as paid evenly through the year, no matter when it happens. Raising withholding on a new Form W-4 for the rest of 2026 can erase the penalty on earlier quarters.' : 'Paying the catch-up as soon as possible keeps the penalty from growing.'}</p></div>`);
+    }
+    if (dr.annual.draw < 0) {
+      alerts.push(`<div class="alert bad"><strong>Projected profit doesn't cover the tax set-aside and contributions.</strong><p>Draws come to ${money(dr.annual.draw)} for the year. Lower the planned contributions or revisit the profit projection.</p></div>`);
+    }
+    if (r.householdProfit <= 0) {
+      alerts.push(`<div class="alert warn"><strong>The LLC shows no profit, so there is no self-employment tax.</strong><p>A loss reduces your other taxable income.</p></div>`);
+    }
+
+    // --- Stats
+    const stats = `
+      <div class="stats">
+        <div class="stat"><span class="k">Total 2026 federal tax</span><span class="v">${money(r.totalTax)}</span><span class="d">${pct(r.effectiveRateOnAgi)} of AGI</span></div>
+        <div class="stat"><span class="k">Self-employment tax</span><span class="v">${money(r.seTax)}</span><span class="d">15.3% on 92.35% of profit</span></div>
+        <div class="stat"><span class="k">Tax caused by the LLC</span><span class="v">${money(o.llcAttributableTax)}</span><span class="d">${pct(o.llcEffectiveRate)} of LLC profit</span></div>
+        <div class="stat"><span class="k">Set aside from each draw</span><span class="v">${pct(dr.setAsideRate)}</span><span class="d">federal + state</span></div>
+      </div>`;
+
+    // --- Quarterly schedule
+    const qRows = p.quarters.map((q) => `
+      <tr class="${q.past ? 'past' : ''}">
+        <td>Q${q.quarter}</td>
+        <td>${d(q.due)}</td>
+        <td class="n">${money(q.planned)}</td>
+        <td class="n">${money(q.paid)}</td>
+        <td class="n">${q.past ? '—' : money(q.recommended + (q === next ? p.catchUpNow : 0))}</td>
+        <td><span class="pill ${q.status}">${{ paid: 'Paid', short: 'Paid short', missed: 'Missed', partial: 'Partly paid', upcoming: 'Upcoming' }[q.status]}</span></td>
+      </tr>`).join('');
+    const basisText = p.strategy === 'payInFull'
+      ? `Paying your full projected 2026 tax (${money(p.currentTax)}) less withholding.`
+      : `Safe harbor: ${p.safeHarborBasis}, the smaller of ${money(p.currentYearSafeHarbor)} (90% of 2026)${p.priorYearSafeHarbor != null ? ` and ${money(p.priorYearSafeHarbor)} (${r.input.priorYearAgi > 150000 ? '110%' : '100%'} of 2025)` : '; add your 2025 tax to compare with last year'}, less ${money(p.withholding)} withholding.`;
+    const quarterly = `
+      <section class="panel">
+        <div class="panel-head"><h2>Quarterly estimated payments</h2><p>${esc(basisText)}</p></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Quarter</th><th>Due</th><th class="n">Planned</th><th class="n">Paid</th><th class="n">Still to pay</th><th>Status</th></tr></thead>
+          <tbody>${qRows}</tbody>
+        </table></div>
+      </section>`;
+
+    // --- Draw register
+    const regRows = dr.rows.map((row) => row.kind === 'estimate'
+      ? `<tr class="est${row.past ? ' past' : ''}"><td>${d(row.date)}</td><td colspan="5">1040-ES payment, Q${row.quarter}</td><td class="n">${money(row.federal)}</td><td class="n${row.reserveBalance < -0.5 ? ' neg' : ''}">${money(row.reserveBalance)}</td></tr>`
+      : `<tr class="${row.past ? 'past' : ''}"><td>${d(row.date)}</td><td class="n">${money(row.profit)}</td><td class="n">${money(row.federal)}</td><td class="n">${money(row.state)}</td><td class="n">${money(row.contributions)}</td><td class="n"><strong>${money(row.draw)}</strong></td><td></td><td class="n${row.reserveBalance < -0.5 ? ' neg' : ''}">${money(row.reserveBalance)}</td></tr>`).join('');
+    const register = `
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Owner draw register</h2>
+          <p>${esc(dr.frequencyLabel)}, ${dr.periods} draws in 2026</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="k">Profit per draw</span><span class="v">${money(dr.per.profit)}</span></div>
+          <div class="stat"><span class="k">Federal set-aside</span><span class="v">${money(dr.per.federal)}</span></div>
+          <div class="stat"><span class="k">State set-aside</span><span class="v">${money(dr.per.state)}</span></div>
+          <div class="stat"><span class="k">Take-home draw</span><span class="v">${money(dr.per.draw)}</span><span class="d">${money(dr.annual.draw)} for the year</span></div>
+        </div>
+        ${dr.startingCushion > 0.5 ? `<div class="alert warn"><strong>Keep ${money(dr.startingCushion)} extra in the tax account.</strong><p>Payment dates are uneven (Q2 covers only two months), so an even set-aside runs short before one of the due dates. The red balances below show when.</p></div>` : ''}
+        <div class="table-wrap tall"><table>
+          <thead><tr><th>Date</th><th class="n">Profit</th><th class="n">Federal</th><th class="n">State</th><th class="n">Health / retire</th><th class="n">Your draw</th><th class="n">Paid to IRS</th><th class="n">Tax reserve</th></tr></thead>
+          <tbody>${regRows}</tbody>
+        </table></div>
+        <p class="hint">The federal set-aside covers all federal tax not already withheld from W-2 pay, so the reserve left after Q4 is what you'll owe with your return. Move each set-aside into a separate savings account on draw day.</p>
+      </section>`;
+
+    // --- Tax breakdown ledger
+    const x = r.input;
+    const otherIncomeTotal = x.interest + x.ordinaryDividends + r.capitalGainIncluded + x.otherIncome;
+    const ledger = `
+      <section class="panel">
+        <div class="panel-head"><h2>2026 tax breakdown</h2><p>Line references are to the 2026 forms.</p></div>
+        <div class="ledger">
+          <section>
+            <h3>Income</h3>
+            ${line('LLC net profit, household share', r.householdProfit, { ref: 'Sch. C 31' })}
+            ${line('W-2 wages', x.yourW2Wages + x.spouseW2Wages, { ref: '1040 1a' })}
+            ${otherIncomeTotal ? line('Interest, dividends, gains, other', otherIncomeTotal) : ''}
+            ${line('Total income', r.totalIncome, { cls: 'total', ref: '1040 9' })}
+            <h3 style="margin-top:14px">Adjustments</h3>
+            ${line('Deductible half of SE tax', -r.halfSeTax, { ref: 'Sch. 1 15', cls: 'sub' })}
+            ${r.seHealthDeduction ? line('Self-employed health insurance', -r.seHealthDeduction, { ref: 'Sch. 1 17', cls: 'sub' }) : ''}
+            ${r.retirementDeduction ? line('SEP / Solo 401(k)', -r.retirementDeduction, { ref: 'Sch. 1 16', cls: 'sub' }) : ''}
+            ${x.hsaContributions ? line('HSA', -x.hsaContributions, { ref: 'Sch. 1 13', cls: 'sub' }) : ''}
+            ${x.otherAdjustments ? line('Other adjustments', -x.otherAdjustments, { cls: 'sub' }) : ''}
+            ${line('Adjusted gross income', r.agi, { cls: 'total', ref: '1040 11' })}
+            <h3 style="margin-top:14px">Deductions</h3>
+            ${line(r.itemizes ? 'Itemized deductions' : 'Standard deduction', -r.deduction, { cls: 'sub', note: r.itemizes ? `Includes ${money(r.saltAllowed)} state and local tax (limit ${money(r.saltLimit)}).` : `Itemized total would be ${money(r.itemizedDeduction)}.` })}
+            ${r.nonItemizerCharity ? line('Charitable gifts, non-itemizer', -r.nonItemizerCharity, { cls: 'sub' }) : ''}
+            ${r.seniorDeduction ? line('Senior deduction', -r.seniorDeduction, { cls: 'sub' }) : ''}
+            ${line('Qualified business income deduction', -r.qbiDeduction, { ref: 'Form 8995', cls: 'sub', note: r.qbiNote })}
+            ${line('Taxable income', r.taxableIncome, { cls: 'total', ref: '1040 15' })}
+          </section>
+          <section>
+            <h3>Self-employment tax</h3>
+            ${line('Net earnings (92.35% of profit)', r.netSeEarnings, { ref: 'Sch. SE 6' })}
+            ${line('Social Security, 12.4%', r.se.you.socialSecurity + r.se.spouse.socialSecurity, { cls: 'sub', note: 'Stops at the $184,500 wage base, less any W-2 wages.' })}
+            ${line('Medicare, 2.9%', r.se.you.medicare + r.se.spouse.medicare, { cls: 'sub' })}
+            ${line('Self-employment tax', r.seTax, { cls: 'total', ref: 'Sch. SE 12' })}
+            <h3 style="margin-top:14px">Total tax</h3>
+            ${line('Income tax before credits', r.incomeTaxBeforeCredits, { ref: '1040 16', note: `Top bracket reached: ${pct(r.marginalRate, 0)}.` })}
+            ${r.ctcNonrefundable ? line('Child and dependent credits', -r.ctcNonrefundable, { ref: '1040 19', cls: 'sub' }) : ''}
+            ${r.otherCreditsUsed ? line('Other credits', -r.otherCreditsUsed, { cls: 'sub' }) : ''}
+            ${line('Self-employment tax', r.seTax, { ref: 'Sch. 2 4', cls: 'sub' })}
+            ${r.additionalMedicare ? line('Additional Medicare tax, 0.9%', r.additionalMedicare, { ref: 'Form 8959', cls: 'sub' }) : ''}
+            ${r.niit ? line('Net investment income tax, 3.8%', r.niit, { ref: 'Form 8960', cls: 'sub' }) : ''}
+            ${r.refundableCtc ? line('Refundable child tax credit', -r.refundableCtc, { ref: '1040 28', cls: 'sub' }) : ''}
+            ${line('Total 2026 tax', r.totalTax, { cls: 'total' })}
+            ${line('Withheld from W-2 pay', -p.withholding, { ref: '1040 25', cls: 'sub' })}
+            ${line('Covered by estimated payments and April balance', Math.max(0, r.totalTax - p.withholding), { cls: 'total' })}
+          </section>
+        </div>
+      </section>`;
+
+    const notes = `
+      <section class="panel">
+        <div class="panel-head"><h2>How owner draws are taxed</h2></div>
+        <div class="notes">
+          <div><strong>Draws aren't income or expenses.</strong><p>Moving money from the LLC to yourself doesn't change your tax. You owe tax on the LLC's profit whether you draw it or leave it in the business.</p></div>
+          <div><strong>No payroll withholding means quarterly payments.</strong><p>Nobody withholds for you, so you pay income tax and SE tax through Form 1040-ES on April 15, June 15, September 15 and January 15.</p></div>
+          <div><strong>Safe harbor protects you from penalties.</strong><p>Pay at least 90% of 2026 tax or 100% of 2025 tax (110% if 2025 AGI was over $150,000), spread evenly, and there's no penalty even if you owe more in April.</p></div>
+          <div><strong>Uneven income?</strong><p>If most of your profit comes late in the year, the annualized-income method on Form 2210 Schedule AI can lower early installments. This planner assumes profit is spread evenly.</p></div>
+          <div><strong>Profit changed? Update the projection.</strong><p>Re-run this each quarter with your year-to-date books extended to a full year, and adjust the next payment.</p></div>
+          <div><strong>An S-corp election works differently.</strong><p>If the LLC elected S-corp taxation, you must run W-2 payroll with a reasonable salary. This planner is for LLCs taxed as a sole proprietorship or partnership.</p></div>
+        </div>
+      </section>`;
+
+    out.innerHTML = voucher + alerts.join('') + stats + quarterly + register + ledger + notes;
+  }
+
+  const note = document.getElementById('example-note');
+  const noteText = document.getElementById('example-text');
+  function markExample(isExample) {
+    note.classList.toggle('mine', !isExample);
+    noteText.textContent = isExample
+      ? 'These are example figures. Replace them with yours; they stay in this browser only.'
+      : 'Your figures are saved in this browser only.';
+  }
+  const saved = load();
+  writeForm(saved || EXAMPLE);
+  markExample(!saved);
+  const onEdit = () => { markExample(false); render(true); };
+  form.addEventListener('input', onEdit);
+  form.addEventListener('change', onEdit);
+  form.addEventListener('submit', (e) => e.preventDefault());
+  document.getElementById('reset').addEventListener('click', () => {
+    writeForm({ ...EXAMPLE, asOf: todayIso() });
+    try { localStorage.removeItem(STORE_KEY); } catch (_e) { /* storage unavailable */ }
+    markExample(true);
+    render(false);
+  });
+  render(false);
+})();
+</script>
+<!-- page:end -->
+</body>
+</html>
